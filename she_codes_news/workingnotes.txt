@@ -6,3 +6,53 @@ Like and comment
 Forward stories externally 
 Username story view 
 Upcoming events
+
+For like option: 
+Added to models.py:
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    article = models.ForeignKey(NewsStory, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+Edited urls.py:
+from django.urls import path
+from . import views
+from .views import like_NewsStory, unlike_NewsStory
+
+app_name = 'news'
+
+urlpatterns = [
+    path('', views.IndexView.as_view(), name='index'),
+    path('<int:pk>/', views.StoryView.as_view(), name='story'),
+    path('add-story/', views.AddStoryView.as_view(), name='newStory'),
+    path('like/<int:NewsStory_id>/', like_NewsStory, name='like_NewsStory'),
+    path('unlike/<int:NewsStory_id>/', unlike_NewsStory, name='unlike_NewsStory'),
+]
+
+Edited views.py:
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from .models import NewsStory, Like
+
+@login_required
+def like_NewsStory(request, NewsStory_id):
+    NewsStory = get_object_or_404(NewsStory, pk=NewsStory_id)
+    Like.objects.get_or_create(user=request.user, NewsStory=NewsStory)
+    return redirect('NewsStory_detail', NewsStory_id=NewsStory.id)
+
+@login_required
+def unlike_NewsStory(request, NewsStory_id):
+    NewsStory = get_object_or_404(NewsStory, pk=NewsStory_id)
+    Like.objects.filter(user=request.user, NewsStory=NewsStory).delete()
+    return redirect('NewsStory_detail', NewsStory_id=NewsStory.id)   
+
+storycard.html:
+        <p>Likes: {{ NewsStory.like_set.count }}</p>
+
+        {% if request.user.is_authenticated %}
+          {% if request.user in NewsStory.like_set.all %}
+            <a href="{% url 'unlike_NewsStory' NewsStory.id %}">Unlike</a>
+          {% else %}
+            <a href="{% url 'like_NewsStory' NewsStory.id %}">Like</a>
+          {% endif %}
+        {% endif %}

@@ -10,5 +10,10 @@ class NewsStory(models.Model):
     )
     pub_date = models.DateTimeField()
     content = models.TextField()
+    image = models.URLField(null=True, blank=True)
 
+class Like(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    article = models.ForeignKey(NewsStory, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
     
