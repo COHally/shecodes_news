@@ -3,9 +3,7 @@ from django.urls import reverse_lazy
 from .models import NewsStory
 from .forms import StoryForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from .models import NewsStory, Like
+
 
 
 class IndexView(generic.ListView):
@@ -37,15 +35,5 @@ class AddStoryView(LoginRequiredMixin, generic.CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-@login_required
-def like_NewsStory(request, NewsStory_id):
-    NewsStory = get_object_or_404(NewsStory, pk=NewsStory_id)
-    Like.objects.get_or_create(user=request.user, NewsStory=NewsStory)
-    return redirect('NewsStory_detail', NewsStory_id=NewsStory.id)
 
-@login_required
-def unlike_NewsStory(request, NewsStory_id):
-    NewsStory = get_object_or_404(NewsStory, pk=NewsStory_id)
-    Like.objects.filter(user=request.user, NewsStory=NewsStory).delete()
-    return redirect('NewsStory_detail', NewsStory_id=NewsStory.id)   
     
