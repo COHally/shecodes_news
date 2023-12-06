@@ -7,10 +7,10 @@ Forward stories externally
 Username story view 
 Upcoming events
 
-For like option: 
+FOR LIKE OPTION:
 Added to models.py:
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey('settings.AUTH_USER_MODEL', on_delete=models.CASCADE)
     article = models.ForeignKey(NewsStory, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -30,29 +30,119 @@ urlpatterns = [
 ]
 
 Edited views.py:
-from django.shortcuts import get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from .models import NewsStory, Like
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
+from django.views import generic
+from .models import CustomUser
+from .forms import CustomUserCreationForm, 
+from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-@login_required
-def like_NewsStory(request, NewsStory_id):
-    NewsStory = get_object_or_404(NewsStory, pk=NewsStory_id)
-    Like.objects.get_or_create(user=request.user, NewsStory=NewsStory)
-    return redirect('NewsStory_detail', NewsStory_id=NewsStory.id)
+class CreateAccountView(CreateView):
+    form_class = CustomUserCreationForm
+    success_url = reverse_lazy('login')
+    template_name = 'users/createAccount.html'
 
-@login_required
-def unlike_NewsStory(request, NewsStory_id):
-    NewsStory = get_object_or_404(NewsStory, pk=NewsStory_id)
-    Like.objects.filter(user=request.user, NewsStory=NewsStory).delete()
-    return redirect('NewsStory_detail', NewsStory_id=NewsStory.id)   
+class MyProfile(LoginRequiredMixin, View):
+    def get(self, request):
+        user_form = UserUpdateForm(instance=request.user)
+        profile_form = ProfileUpdateForm(instance=request.user.profile)
+        
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form
+        }
+        
+        return render(request, 'users/profile.html', context)
+    
+    def post(self,request):
+        user_form = UserUpdateForm(
+            request.POST, 
+            instance=request.user
+        )
+        profile_form = ProfileUpdateForm(
+            request.POST,
+            request.FILES,
+            instance=request.user.profile
+        )
 
-storycard.html:
-        <p>Likes: {{ NewsStory.like_set.count }}</p>
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            
+            messages.success(request,'Your profile has been updated successfully')
+            
+            return redirect('profile')
+        else:
+            context = {
+                'user_form': user_form,
+                'profile_form': profile_form
+            }
+            messages.error(request,'Error updating you profile')
+            
+            return render(request, 'users/profile.html', context)
 
-        {% if request.user.is_authenticated %}
-          {% if request.user in NewsStory.like_set.all %}
-            <a href="{% url 'unlike_NewsStory' NewsStory.id %}">Unlike</a>
-          {% else %}
-            <a href="{% url 'like_NewsStory' NewsStory.id %}">Like</a>
-          {% endif %}
-        {% endif %}
+admin.py:
+from .models import Profile
+
+
+admin.site.register(Profile)    
+
+profile.html:
+{% extends 'base.html' %}
+
+{% extends 'base.html' %} 
+
+{% block content %}
+
+
+<div class="center">
+	<form method="POST" enctype="multipart/form-data" class="card">
+		{% csrf_token %} 
+		
+	    {% if user.profile %}
+			<img src="{{user.profile.avatar.url}}" alt="{{ user.username }}" class="avatar"  accept=".jpg,.jpeg,.png"/>
+	    {% endif %}
+	    
+	    <h2 class="text-center">{{ user.username | title }}</h2>
+	    <p class="text-center"><a href="mailto:{{user.email}}">{{user.email}}</a></p>
+   	    <hr>
+		
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" value="{{user.email}}" />
+			
+		
+		<label for="avatar">Avatar:</label>
+		<input type="file" name="avatar" id="avatar">	
+		
+	    <button type="submit" class="btn btn-primary full-width">Update Profile</button>
+	
+	</form>
+</div>
+
+{% endblock content %}
+
+models.py:
+class Profile(models.Model):
+    CustomUser = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+
+    avatar = models.ImageField(
+        default='avatar.jpg', # default avatar
+        upload_to='profile_avatars' # dir to store the image
+    )
+
+    def __str__(self):
+        return f'{self.CustomUser.username} Profile'
+
+    def save(self, *args, **kwargs):
+        # save the profile first
+        super().save(*args, **kwargs)
+
+        # resize the image
+        img = Image.open(self.avatar.path)
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            # create a thumbnail
+            img.thumbnail(output_size)
+            # overwrite the larger image
+            img.save(self.avatar.path)
