@@ -12,8 +12,8 @@
 
 #latest-stories {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 2fr 2fr;
+    grid-template-rows: 2fr 2fr;
     gap: 1px 1px;
     grid-template-areas: "left-1 right-1" "left-1 right-2" "left-1 right-3";
     max-height: 500px;
