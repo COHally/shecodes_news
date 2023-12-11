@@ -146,3 +146,49 @@ class Profile(models.Model):
             img.thumbnail(output_size)
             # overwrite the larger image
             img.save(self.avatar.path)
+
+    {% for news_story in latest_stories %}
+        <h3>{{ news_story.title }}</h3>
+        <p>{{ news_story.content }}</p>
+        <!-- Add other fields as needed -->
+    {% endfor %}          
+
+Views.py - author search: 
+class ByAuthor(generic.DetailView):
+    model= NewsStory
+    template_name = 'news/index.html'
+    context_object_name = 'byAuthor'
+    slug_field = 'author'
+    slug_url_kwarg = 'author'
+
+    def get_queryset(self):
+        # Filter news stories by the author's username from the URL parameters
+        author_username = self.kwargs['author']
+        return NewsStory.objects.filter(author__username=author_username)
+
+urls.py:
+    path('author/<str:author>/', views.ByAuthor.as_view(), name='byAuthor')  
+
+    index.html:
+    <form>
+    <label for="author">Search by Author:</label>
+    <input type="text" id="author" name="author" placeholder="Enter author's name">
+    <button type="submit">Search</button>
+</form>
+
+<!-- Display the search results or latest stories below, based on the context -->
+{% if request.GET.author %}
+    <h1>Author: {{author.username}}</h1>
+    {% for story in author.stories.all %}
+        <p>{{story.title}}</p>
+        <p>{{ news_story.content }}</p>
+        <!-- Add other fields as needed -->
+    {% endfor %}
+{% else %}
+    <h2>Latest Stories</h2>
+    {% for news_story in latest_stories %}
+        <h3>{{ news_story.title }}</h3>
+        <p>{{ news_story.content }}</p>
+        <!-- Add other fields as needed -->
+    {% endfor %}
+{% endif %}  

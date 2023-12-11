@@ -6,30 +6,9 @@
 {% endblock %}
 
 
+
+
 {% block content %}
-<form method="get" action="{% url 'author_search' %}">
-    <label for="author">Search by Author:</label>
-    <input type="text" id="author" name="author" placeholder="Enter author's name">
-    <button type="submit">Search</button>
-</form>
-
-<!-- Display the search results or latest stories below, based on the context -->
-{% if request.GET.author %}
-    <h2>Search Results for Author: {{ request.GET.author }}</h2>
-    {% for news_story in news_stories %}
-        <h3>{{ news_story.title }}</h3>
-        <p>{{ news_story.content }}</p>
-        <!-- Add other fields as needed -->
-    {% endfor %}
-{% else %}
-    <h2>Latest Stories</h2>
-    {% for news_story in latest_stories %}
-        <h3>{{ news_story.title }}</h3>
-        <p>{{ news_story.content }}</p>
-        <!-- Add other fields as needed -->
-    {% endfor %}
-{% endif %}
-
 <br>
 <a href="{% url 'news:newStory' %}">Write New Story</a>
     <h2>Latest News</h2>

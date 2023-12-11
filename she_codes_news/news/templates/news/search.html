@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'users/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% if news_results %}
+        <ul>
+            {% for news in news_results %}
+                <li>{{ news.title }} {{ news.content }} by {{ news.author.username }}</li>
+            {% endfor %}
+{% else %}
+    <p>I may need to find a new muse...check back later to check out my creative genius!</p>
+{% endif %}
+
+{% endblock %}
