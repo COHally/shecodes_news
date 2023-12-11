@@ -6,4 +6,14 @@
     {% else %}
         <a href="{% url 'login' %}">Login</a>
     {% endif %}
+    {% if request.user.is_authenticated %}
+    
+    {%else%}
+    <a href="{% url 'users:createAccount' %}">Create Account</a>
+    {%endif%}
+
+    <form action="{% url 'news:search' %}" method="get">
+        <input type="text" name="q" placeholder="Search news...">
+        <button type="submit">Search</button>
+    </form>
 </nav>

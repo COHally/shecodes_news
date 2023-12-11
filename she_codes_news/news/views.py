@@ -1,8 +1,15 @@
-from django.views import generic
+from typing import Any
+from django.db.models.query import QuerySet
+from django.views import generic, View
 from django.urls import reverse_lazy
 from .models import NewsStory
 from .forms import StoryForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from users.models import CustomUser
+from django.shortcuts import render
+
+
+
 
 
 
@@ -34,6 +41,21 @@ class AddStoryView(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+    
+
+class SearchView(View):
+    template_name = 'news/search.html'
+
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('q', '')
+        news_results = NewsStory.objects.filter(author__username__icontains=query)
+
+        context = {
+            'news_results': news_results,
+            'query': query,
+        }
+
+        return render(request, self.template_name, context)
 
 
     

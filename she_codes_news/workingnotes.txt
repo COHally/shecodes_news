@@ -27,5 +27,3 @@ Upcoming events
         <p class="bio-heading">Bio: {{ user.bio }}</p>
     </div>
 </div>
-</div>
-{% endblock %}

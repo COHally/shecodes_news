@@ -10,14 +10,22 @@
 <h2>Hello {{ user.username }}</h2>
 <div class="auth-details-wrapper">
     {% if user.profile_image != None %}
-    <img class="prof_image" src="{{ user.profile_image }}" alt="{{ user.username }} profile picture">
+    <img class="prof_image" src="{ url 'users\images\avatar.jpg' }">
     {% endif %}
     <div>
-        <p><span class="bio-heading">Name:</span> {{ user.username }}</p>
-        <p><span class="bio-heading">Email:</span> <a href="mailto:{{user.email}}">{{ user.email }}</a></p>
-        <p class="bio-heading">Bio: {{ user.bio }}</p>
+            <p><span class="bio-heading">Name:</span> {{ author.username }}</p>
+            <p><span class="bio-heading">Email:</span> <a href="mailto:{{author.email}}">{{ user.email }}</a></p>
+            <p class="bio-heading">Bio: {{ author.bio }}</p>
+
+        {% if author.stories %}
+            <h3>Written by me....</h3>
+            {% for story in author.stories.all %}
+                {% include 'news/storycard.html' %}
+            {% empty %}
+                <p>I may need to find a new muse...check back later to check out my creative genius!</p>
+            {% endfor %}
+        {% endif %}
     </div>
-</div>
 </div>
 {% endblock %}
 
