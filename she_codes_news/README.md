@@ -36,7 +36,7 @@ I was tasked with creating a news site that would allow users to read stories an
 
 ## Database Schema
 
-![ {{ My ERD }} ]( {{ ./relative_path_to_your_entity_relationship_diagram }} )
+![ Basic ERD ] ( images\ERD.png )
 
 ## Project Features
 
