@@ -110,23 +110,20 @@ a, p {
    
   }
 
-  input {
-    border: none;
-    outline: none;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(215, 189, 54, 0.8);
-  }
-  
-  /* Add hover effect */
-  input:hover {
-    box-shadow: 0 0 30px rgba(215, 189, 54, 0.8);
-  }
-  
-  /* Add transition for smooth effect */
-  input {
-    transition: box-shadow 0.3s ease-in-out;
-  }
+input {
+border: none;
+outline: none;
+padding: 10px;
+border-radius: 5px;
+box-shadow: 0 0 5px darkorchid;
+}
 
+/* Add hover effect */
+input:hover {
+box-shadow: 0 0 30px darkorchid;
+}
 
-
+/* Add transition for smooth effect */
+input {
+transition: box-shadow 0.3s ease-in-out;
+}

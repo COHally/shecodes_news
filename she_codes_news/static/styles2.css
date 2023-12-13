@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@700&display=swap');
+
+html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+    background-color: #dfe1df;
+  }
+  body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+    margin: 0;
+    padding: auto;
+    font-weight: normal;
+  }
+  ol, ul {
+    list-style: none;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+:root {
+--navy:22223B;
+--violet:4A4E69;
+--white: FBFAFA;
+--cream: F2E9E4;
+--tan: C9ADA7;
+--mauve:9A8C98;
+/*  inherited colors  */
+--text: var(--navy);
+/*  padding  */
+--padding: 10px 15px;
+}
+
+/* set default font style here */
+html, body{
+font-size:18px;
+color:var(--text); 
+font-family:Arial, Helvetica, sans-serif;
+padding: var(--padding);
+}
+
+/* Add Heading styles here  */
+h1 {
+width: 100%;
+font-family: 'Montserrat', serif;
+font-size:40px;
+font-weight: 600;
+margin-top: 10px;
+margin-bottom: 20px;
+padding: 20px;
+background-color: var(--color1);
+border-color: var(--color0);
+border-width: 3px;
+border-radius: 7px;
+}
+
+h2 {
+    font-family: 'Montserrat', serif;
+    font-size:26px;
+    font-weight: 500;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: white;
+    background-color: var(--color2);
+    border-color: var(--color0);
+    border-width: 3px;
+    border-radius: 7px;
+}
+
+h3 {
+font-family: 'Montserrat', sans-serif;
+font-size:25px;
+font-weight: 200;
+margin: 15px;
+padding: 5px;
+background-color: var(--color4);
+color: white;
+border-color: var(--color0);
+border-width: 3px;
+border-radius: 4px;
+}
+
+h4 {
+font-family: 'Montserrat Slab', sans-serif;
+font-size:24px;
+font-style: italic, bold;
+padding: auto;
+}
+
+h5 {
+font-family: 'Montserrat Slab', sans-serif;
+font-size:22px;
+font-style: italic;
+font-weight: 200;
+}
+
+h6 {
+font-family: 'Montserrat Slab', serif;
+font-size:16px;
+font-style: italic;
+font-weight: 200;
+margin: 5px;
+padding: 5px;
+}
+
+body {
+background-color: var(--tan);
+}
+
+header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-bottom: 1px solid #000;
+}
+
+/* Nav Styling */
+nav {
+    flex-basis: 30%;
+    display: flex;
+    flex-direction: row;
+    /* align-items: flex-end; */
+    align-items: center;
+    justify-content: center;
+}
+
+a {
+    margin: 2px;
+    text-decoration: none;
+    color: #000;
+}
+
+a, p {
+    font-family: 'Montserrat', sans-serif;
+    font-size:18px;
+}
+
+nav a:hover{
+color: var(--mauve);
+}
+
+header{
+    height: max-content;
+    background-color: var(--color1);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: space-around;
+  }
+  
+nav{
+width: 100%;
+height: 15rex;
+background-color: var(--color1);
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: space-around;
+}
+
+nav a {
+background-color: var(--color1);
+max-width: fit-content;
+/* style as buttons with hover */
+text-wrap: nowrap;
+}
+  
+
+/* Header Text Styling */
+#header-text {
+width: max-content;
+margin: 0;
+position: relative;
+font: 500 3rem "Poppins", sans-serif;
+isolation: isolate;
+color:var(--violet);
+animation: showText 1.5s linear forwards 1s;
+}
+
+#header-text::after {
+content: "";
+position: absolute;
+left: -5%;
+top: 0;
+right: 105%;
+bottom: 0;
+background: var(--cream);
+opacity: 1;
+z-index: 1;
+animation: show 1.5s ease forwards 1s;
+}
+
+@keyframes show {
+50% {
+left: -5%;
+right: -5%;
+}
+100% {
+right: -5%;
+left: 105%;
+}
+}
+
+@keyframes showText {
+49% {
+color: #333;
+}
+50% {
+color: white;
+}
+100% {
+color: white;
+}
+}
+
+a, p {
+font-family: monospace;
+}
+
+#story-form {
+box-sizing: border-box;
+padding: 2rem;
+border-radius: 1rem;
+font-size: large;
+text-align: center;
+box-shadow: var(--violet);
+
+
+}
+
+input {
+border: none;
+outline: none;
+padding: 10px;
+border-radius: 5px;
+box-shadow: 0 0 5px var(--mauve);
+}
+
+/* Add hover effect */
+input:hover {
+box-shadow: 0 0 5px var(--mauve);
+}
+
+/* Add transition for smooth effect */
+input {
+transition: box-shadow 0.3s ease-in-out;
+}
+
+
+
+
+/* Footer Styling */
+footer{
+background-color: var(--cream);
+padding: var(--);
+}
+
+footer a{
+display: flex;
+justify-content: flex-end;
+padding: 0.5rem;
+font: var(--navy);
+}
+
+footer p{
+display: flex;
+justify-content: flex-start;
+align-items: center;
+padding: 0%var(--padding);
+}
+
+.link_logo{
+padding: 10px;
+margin: 0 10px;
+width: 50px;
+display:flex;
+align-items: flex-start;
+border-radius: 50%;
+}
