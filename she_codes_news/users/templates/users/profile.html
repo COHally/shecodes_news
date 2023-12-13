@@ -20,7 +20,7 @@
         {% if author.stories %}
             <h3>Written by me....</h3>
             {% for story in author.stories.all %}
-                {% include 'news/storycard.html' %}
+            {% include 'news/storycard.html' %}
             {% empty %}
                 <p>I may need to find a new muse...check back later to check out my creative genius!</p>
             {% endfor %}
